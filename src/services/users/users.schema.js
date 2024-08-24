@@ -10,7 +10,8 @@ export const userSchema = Type.Object(
   {
     _id: ObjectIdSchema(),
     email: Type.String(),
-    password: Type.Optional(Type.String())
+    password: Type.Optional(Type.String()),
+    firebaseUid: Type.Optional(Type.String()),
   },
   { $id: 'User', additionalProperties: false }
 )
@@ -23,7 +24,7 @@ export const userExternalResolver = resolve({
 })
 
 // Schema for creating new entries
-export const userDataSchema = Type.Pick(userSchema, ['email', 'password'], {
+export const userDataSchema = Type.Pick(userSchema, ['email', 'password', 'firebaseUid'], {
   $id: 'UserData'
 })
 export const userDataValidator = getValidator(userDataSchema, dataValidator)
@@ -41,7 +42,7 @@ export const userPatchResolver = resolve({
 })
 
 // Schema for allowed query properties
-export const userQueryProperties = Type.Pick(userSchema, ['_id', 'email'])
+export const userQueryProperties = Type.Pick(userSchema, ['_id', 'email', 'firebaseUid'])
 export const userQuerySchema = Type.Intersect(
   [
     querySyntax(userQueryProperties),
